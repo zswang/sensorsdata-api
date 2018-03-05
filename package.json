@@ -1,0 +1,43 @@
+{
+  "name": "sensorsdata-api",
+  "version": "0.0.6",
+  "description": "神策开放 API",
+  "main": "lib/index",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "_update_version": "node version.js",
+    "_dist": "gulp dist",
+    "test": "istanbul cover --hook-run-in-context node_modules/mocha/bin/_mocha -- -R spec",
+    "example": "gulp example",
+    "mocha": "mocha",
+    "dist": "npm run _update_version && npm run _dist"
+  },
+  "homepage": "https://github.com/zswang/irequest",
+  "author": {
+    "name": "zswang",
+    "url": "http://weibo.com/zswang"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "irequest": "^0.0.10",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.33",
+    "@types/request": "^2.0.8",
+    "gulp": "^3.9.1",
+    "gulp-examplejs": "0.0.9",
+    "gulp-jdists": "^2.0.17",
+    "gulp-rename": "^1.2.2",
+    "gulp-typescript": "^3.1.6",
+    "istanbul": "^0.3.17",
+    "merge2": "^1.1.0",
+    "mocha": "^2.0.1",
+    "request": "^2.83.0",
+    "should": "^4.1.0",
+    "typescript": "^2.0.3"
+  },
+  "files": [
+    "lib"
+  ]
+}
