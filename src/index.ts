@@ -1,73 +1,73 @@
-import * as RequestBase from "irequest";
-import { stringify } from "querystring";
+import * as RequestBase from 'irequest'
+import { stringify } from 'querystring'
 
 export interface ISensorsdataOptions {
   /**
    * 是否开启调试信息
    */
-  debug: boolean;
+  debug: boolean
   /**
    * 访问令牌
    */
-  apiToken: string;
+  apiToken: string
   /**
    * API 服务地址
    */
-  apiHost: string;
+  apiHost: string
   /**
    * 项目
    */
-  project: string;
+  project: string
 }
 
 export interface ICommonReturn {
-  error?: string;
+  error?: string
 }
 
 export interface IUserAnalyticsReportReturn extends ICommonReturn {
-  by_fields: string[];
-  series: string[];
-  rows: { values: any[]; by_values: string[] }[];
-  num_rows: number;
-  report_update_time: string;
-  data_update_time: string;
-  data_sufficient_update_time: string;
-  truncated: boolean;
+  by_fields: string[]
+  series: string[]
+  rows: { values: any[]; by_values: string[] }[]
+  num_rows: number
+  report_update_time: string
+  data_update_time: string
+  data_sufficient_update_time: string
+  truncated: boolean
 }
 
 export interface IUserAnalyticsReportParams {
   measures: [
     {
-      event_name?: string;
-      aggregator?: string;
-      field: string;
+      event_name?: string
+      aggregator?: string
+      field: string
     }
-  ];
+  ]
   filter?: {
     conditions: [
       {
-        field: string;
-        function: string;
-        params: string[];
+        field: string
+        function: string
+        params: string[]
       }
-    ];
-    relation: string;
-  };
-  by_fields?: string[];
-  use_cache?: boolean;
+    ]
+    relation: string
+  }
+  by_fields?: string[]
+  use_cache?: boolean
 }
 
 export class Sensorsdata extends RequestBase.RequestBase {
-  options: ISensorsdataOptions;
+  options: ISensorsdataOptions
 
   constructor(options: ISensorsdataOptions) {
-    super(options.debug);
+    super(options.debug)
     this.options = {
       ...{
-        project: "production"
+        project: 'production',
       },
-      ...options
-    };
+      ...options,
+    }
   }
 
   userAnalyticsReport(
@@ -76,15 +76,27 @@ export class Sensorsdata extends RequestBase.RequestBase {
     return this.request(
       `${this.options.apiHost}/user/analytics/report?${stringify({
         token: this.options.apiToken,
-        project: this.options.project
+        project: this.options.project,
       })}`,
       {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "content-type": "application/json;charset=UTF-8"
+          'content-type': 'application/json;charset=UTF-8',
         },
-        body: JSON.stringify(params)
+        body: JSON.stringify(params),
       }
-    ) as Promise<IUserAnalyticsReportReturn>;
+    ) as Promise<IUserAnalyticsReportReturn>
+  }
+
+  sqlQuery(sql: string) {
+    return this.request(`${this.options.apiHost}/sql/query`, {
+      method: 'POST',
+      form: {
+        token: this.options.apiToken,
+        project: this.options.project,
+        format: 'json',
+        q: sql,
+      },
+    })
   }
 }

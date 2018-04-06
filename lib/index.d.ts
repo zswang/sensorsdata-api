@@ -1,4 +1,4 @@
-import * as RequestBase from "irequest";
+import * as RequestBase from 'irequest';
 export interface ISensorsdataOptions {
     /**
      * 是否开启调试信息
@@ -17,9 +17,26 @@ export interface ISensorsdataOptions {
      */
     project: string;
 }
+export interface ICommonReturn {
+    error?: string;
+}
+export interface IUserAnalyticsReportReturn extends ICommonReturn {
+    by_fields: string[];
+    series: string[];
+    rows: {
+        values: any[];
+        by_values: string[];
+    }[];
+    num_rows: number;
+    report_update_time: string;
+    data_update_time: string;
+    data_sufficient_update_time: string;
+    truncated: boolean;
+}
 export interface IUserAnalyticsReportParams {
     measures: [{
-        aggregator: string;
+        event_name?: string;
+        aggregator?: string;
         field: string;
     }];
     filter?: {
@@ -28,6 +45,7 @@ export interface IUserAnalyticsReportParams {
             function: string;
             params: string[];
         }];
+        relation: string;
     };
     by_fields?: string[];
     use_cache?: boolean;
@@ -35,5 +53,6 @@ export interface IUserAnalyticsReportParams {
 export declare class Sensorsdata extends RequestBase.RequestBase {
     options: ISensorsdataOptions;
     constructor(options: ISensorsdataOptions);
-    userAnalyticsReport(params: IUserAnalyticsReportParams): Promise<object>;
+    userAnalyticsReport(params: IUserAnalyticsReportParams): Promise<IUserAnalyticsReportReturn>;
+    sqlQuery(sql: string): Promise<object>;
 }

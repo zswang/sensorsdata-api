@@ -1,6 +1,6 @@
 {
   "name": "sensorsdata-api",
-  "version": "0.0.6",
+  "version": "0.0.9",
   "description": "神策开放 API",
   "main": "lib/index",
   "typings": "lib/index.d.ts",
