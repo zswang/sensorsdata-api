@@ -3,21 +3,25 @@ import { stringify } from 'querystring'
 
 export interface ISensorsdataOptions {
   /**
-   * 是否开启调试信息
+   * {cn}是否开启调试信息
+   * {en}Debugging information switch
    */
   debug: boolean
   /**
-   * 访问令牌
+   * {cn}访问令牌
+   * {en}API access token
    */
   apiToken: string
   /**
-   * API 服务地址
+   * {cn}API 服务地址
+   * {en}API service address
    */
   apiHost: string
   /**
-   * 项目
+   * {cn}项目，默认值 "default"
+   * {en}Analysis sample project, The default is "default"
    */
-  project: string
+  project?: string
 }
 
 export interface ICommonReturn {
@@ -64,12 +68,16 @@ export class Sensorsdata extends RequestBase.RequestBase {
     super(options.debug)
     this.options = {
       ...{
-        project: 'production',
+        project: 'default', // production
       },
       ...options,
     }
   }
 
+  /**
+   * 获取用户分析报表数据
+   * @param params 查询参数
+   */
   userAnalyticsReport(
     params: IUserAnalyticsReportParams
   ): Promise<IUserAnalyticsReportReturn> {
@@ -88,6 +96,11 @@ export class Sensorsdata extends RequestBase.RequestBase {
     ) as Promise<IUserAnalyticsReportReturn>
   }
 
+  /**
+   *
+   * @see https://www.sensorsdata.cn/manual/query_api.html
+   * @param sql {cn}查询语句 {en}Data query
+   */
   sqlQuery(sql: string) {
     return this.request(`${this.options.apiHost}/sql/query`, {
       method: 'POST',
