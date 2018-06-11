@@ -1,6 +1,6 @@
 {
   "name": "sensorsdata-api",
-  "version": "0.0.10",
+  "version": "0.0.14",
   "description": "神策开放 API",
   "main": "lib/index",
   "typings": "lib/index.d.ts",
@@ -19,8 +19,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "irequest": "^0.0.10",
-    "request": "^2.83.0"
+    "irequest": "^0.1.0"
   },
   "devDependencies": {
     "@types/node": "^8.0.33",
@@ -28,12 +27,14 @@
     "gulp": "^3.9.1",
     "gulp-examplejs": "0.0.9",
     "gulp-jdists": "^2.0.17",
-    "gulp-rename": "^1.2.2",
+    "gulp-linenum": "0.0.2",
+    "gulp-rename": "^1.2.3",
+    "gulp-replace": "^1.0.0",
     "gulp-typescript": "^3.1.6",
-    "istanbul": "^0.3.17",
+    "istanbul": "^0.4.5",
     "merge2": "^1.1.0",
-    "mocha": "^2.0.1",
-    "request": "^2.83.0",
+    "mocha": "^5.2.0",
+    "request": "^2.87.0",
     "should": "^4.1.0",
     "typescript": "^2.0.3"
   },

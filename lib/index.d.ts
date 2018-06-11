@@ -60,6 +60,33 @@ export declare class Sensorsdata extends RequestBase.RequestBase {
     /**
      * 获取用户分析报表数据
      * @param params 查询参数
+     * @example userAnalyticsReport()
+      ```js
+      const api = new sa.Sensorsdata({
+        apiHost: 'http://localhost:3636/api',
+        apiToken: '4ac32fb71dda63a728e1706a0e',
+      })
+      api
+        .userAnalyticsReport({
+          measures: [
+            {
+              aggregator: 'count',
+              field: '',
+            },
+          ],
+          filter: {
+            conditions: [],
+          },
+          use_cache: false,
+        })
+        .then(reply => {
+          console.log(JSON.stringify(reply))
+          // > {"series":[],"rows":[],"num_rows":0,"report_update_time":"2018-06-11 20:45:50.934","data_update_time":"1970-01-01 08:00:00.000","data_sufficient_update_time":"1970-01-01 08:00:00.000","truncated":false}
+          // * done
+        }).catch(err => {
+          console.error(err)
+        })
+      ```
      */
     userAnalyticsReport(params: IUserAnalyticsReportParams): Promise<IUserAnalyticsReportReturn>;
     /**
@@ -67,5 +94,5 @@ export declare class Sensorsdata extends RequestBase.RequestBase {
      * @see https://www.sensorsdata.cn/manual/query_api.html
      * @param sql {cn}查询语句 {en}Data query
      */
-    sqlQuery(sql: string): Promise<object>;
+    sqlQuery(sql: string): Promise<any>;
 }

@@ -9,5 +9,6 @@ test/e2e/reports
 selenium-debug.log
 _output
 .cache
-debug.*
+debug*
 coverage/
+package-lock.json
