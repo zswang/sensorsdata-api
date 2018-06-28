@@ -1,7 +1,8 @@
 const http = require('http')
 const url = require('url')
+let count = 0
 const server = http.createServer((req, res) => {
-  let urlInfo = url.parse(req.url)
+  let urlInfo = url.parse(req.url, true)
   switch (urlInfo.pathname) {
     case '/api/user/analytics/report':
       res.writeHead(200, { 'Content-Type': 'text/plain' })
@@ -16,7 +17,13 @@ const server = http.createServer((req, res) => {
           truncated: false,
         })
       )
-      return
+      count++
+      break
+    case '/null/api/sql/query':
+      res.writeHead(200, { 'Content-Type': 'text/plain' })
+      res.end('')
+      count++
+      break
     case '/api/sql/query':
       res.writeHead(200, { 'Content-Type': 'text/plain' })
       res.end(
@@ -41,10 +48,11 @@ const server = http.createServer((req, res) => {
           .map(item => JSON.stringify(item))
           .join('\n')
       )
-      setTimeout(() => {
-        server.close()
-      })
-      return
+      count++
+      break
+  }
+  if (count >= 3) {
+    server.close()
   }
   res.writeHead(404)
   res.end('Not Found')

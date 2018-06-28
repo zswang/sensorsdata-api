@@ -139,6 +139,26 @@ export class Sensorsdata extends RequestBase.RequestBase {
         console.error(err)
       })
     ```
+   * @example sqlQuery():null
+    ```js
+    const api = new sa.Sensorsdata({
+      apiHost: 'http://localhost:3636/null/api',
+      apiToken: '4ac32fb71dda63a728e1706a0e',
+    })
+    api
+      .sqlQuery(`
+        SELECT event, distinct_id
+          FROM events
+          LIMIT 4
+      `)
+      .then(reply => {
+        console.log(JSON.stringify(reply))
+        // > null
+        // * done
+      }).catch(err => {
+        console.error(err)
+      })
+    ```
    */
   sqlQuery(sql: string): Promise<any> {
     return this.request(
@@ -153,6 +173,9 @@ export class Sensorsdata extends RequestBase.RequestBase {
         },
       },
       text => {
+        if (!text) {
+          return null
+        }
         return text
           .trim()
           .split(/\s*\n\s*/)
