@@ -13,7 +13,7 @@ const rename = require('gulp-rename')
 const merge2 = require('merge2')
 const packageInfo = require('./package')
 
-gulp.task('build', function() {
+function build() {
   const tsResult = gulp
     .src('./src/*.ts')
     .pipe(
@@ -43,9 +43,9 @@ gulp.task('build', function() {
       )
       .pipe(gulp.dest('./lib')),
   ])
-})
+}
 
-gulp.task('example', function() {
+function example() {
   return gulp
     .src(`src/index.ts`)
     .pipe(
@@ -56,6 +56,9 @@ gulp.task('example', function() {
     .pipe(
       examplejs({
         header: `
+process.env.SENSORSDATA_API_HOST = 'http://localhost:3636/api'
+process.env.SENSORSDATA_API_TOKEN = '4ac32fb71dda63a728e1706a0e'
+
 const sa = require('../')
 require('./mock/')
       `,
@@ -67,6 +70,6 @@ require('./mock/')
       })
     )
     .pipe(gulp.dest('test'))
-})
+}
 
-gulp.task('dist', ['build', 'example'])
+gulp.task('dist', gulp.series(build, example))

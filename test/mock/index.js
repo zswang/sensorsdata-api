@@ -19,7 +19,7 @@ const server = http.createServer((req, res) => {
       )
       count++
       break
-    case '/null/api/sql/query':
+    case '/api/null/sql/query':
       res.writeHead(200, { 'Content-Type': 'text/plain' })
       res.end('')
       count++

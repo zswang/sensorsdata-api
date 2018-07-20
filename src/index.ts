@@ -1,12 +1,12 @@
-import * as RequestBase from 'irequest'
+import * as irequest from 'irequest'
 import { stringify } from 'querystring'
 
 export interface ISensorsdataOptions {
   /**
-   * {cn}是否开启调试信息
+   * {cn}是否开启调试信息，默认不开启
    * {en}Debugging information switch
    */
-  debug: boolean
+  debug?: boolean
   /**
    * {cn}访问令牌
    * {en}API access token
@@ -40,28 +40,25 @@ export interface IUserAnalyticsReportReturn extends ICommonReturn {
 }
 
 export interface IUserAnalyticsReportParams {
-  measures: [
-    {
-      event_name?: string
-      aggregator?: string
-      field: string
-    }
-  ]
+  measures: {
+    event_name?: string
+    aggregator?: string
+    field: string
+  }[]
+
   filter?: {
-    conditions: [
-      {
-        field: string
-        function: string
-        params: string[]
-      }
-    ]
-    relation: string
+    conditions: {
+      field?: string
+      function?: string
+      params?: string[]
+    }[]
+    relation?: string
   }
   by_fields?: string[]
   use_cache?: boolean
 }
 
-export class Sensorsdata extends RequestBase.RequestBase {
+export class Sensorsdata extends irequest.RequestBase {
   options: ISensorsdataOptions
 
   constructor(options: ISensorsdataOptions) {
@@ -79,30 +76,7 @@ export class Sensorsdata extends RequestBase.RequestBase {
    * @param params 查询参数
    * @example userAnalyticsReport()
     ```js
-    const api = new sa.Sensorsdata({
-      apiHost: 'http://localhost:3636/api',
-      apiToken: '4ac32fb71dda63a728e1706a0e',
-    })
-    api
-      .userAnalyticsReport({
-        measures: [
-          {
-            aggregator: 'count',
-            field: '',
-          },
-        ],
-        filter: {
-          conditions: [],
-        },
-        use_cache: false,
-      })
-      .then(reply => {
-        console.log(JSON.stringify(reply))
-        // > {"series":[],"rows":[],"num_rows":0,"report_update_time":"2018-06-11 20:45:50.934","data_update_time":"1970-01-01 08:00:00.000","data_sufficient_update_time":"1970-01-01 08:00:00.000","truncated":false}
-        // * done
-      }).catch(err => {
-        console.error(err)
-      })
+    <!--jdists import="?debug[desc='userAnalyticsReport']" /-->
     ```
    */
   userAnalyticsReport(
@@ -129,41 +103,28 @@ export class Sensorsdata extends RequestBase.RequestBase {
    * @param sql {cn}查询语句 {en}Data query
    * @example sqlQuery()
     ```js
-    const api = new sa.Sensorsdata({
-      apiHost: 'http://localhost:3636/api',
-      apiToken: '4ac32fb71dda63a728e1706a0e',
-    })
-    api
-      .sqlQuery(`
-        SELECT event, distinct_id
-          FROM events
-          LIMIT 4
-      `)
-      .then(reply => {
-        console.log(JSON.stringify(reply))
-        // > [{"distinct_id":"999999-0000-8888-000000","event":"index_leave"},{"distinct_id":"999999-0000-8888-000000","event":"$pageview"},{"distinct_id":"999999-0000-8888-000001","event":"index_leave"},{"distinct_id":"999999-0000-8888-000001","event":"$pageview"}]
-        // * done
-      }).catch(err => {
-        console.error(err)
-      })
+    <!--jdists import="?debug[desc='sqlQuery']" /-->
     ```
    * @example sqlQuery():null
     ```js
     const api = new sa.Sensorsdata({
-      apiHost: 'http://localhost:3636/null/api',
-      apiToken: '4ac32fb71dda63a728e1706a0e',
+      apiHost: `${process.env.SENSORSDATA_API_HOST}/null`,
+      apiToken: process.env.SENSORSDATA_API_TOKEN,
     })
     api
-      .sqlQuery(`
+      .sqlQuery(
+        `
         SELECT event, distinct_id
           FROM events
           LIMIT 4
-      `)
+      `
+      )
       .then(reply => {
         console.log(JSON.stringify(reply))
         // > null
         // * done
-      }).catch(err => {
+      })
+      .catch(err => {
         console.error(err)
       })
     ```
@@ -194,3 +155,61 @@ export class Sensorsdata extends RequestBase.RequestBase {
     )
   }
 }
+
+/*<remove>*/
+const sa = {
+  Sensorsdata,
+}
+
+/*<declare>*/
+const api = new sa.Sensorsdata({
+  apiToken: process.env.SENSORSDATA_API_TOKEN,
+  apiHost: process.env.SENSORSDATA_API_HOST,
+})
+/*</declare>*/
+
+/*<debug desc="userAnalyticsReport">*/
+/*<jdists import="?declare" />*/
+api
+  .userAnalyticsReport({
+    measures: [
+      {
+        aggregator: 'count',
+        field: '',
+      },
+    ],
+    filter: {
+      conditions: [],
+    },
+    use_cache: false,
+  })
+  .then(reply => {
+    console.log(JSON.stringify(reply))
+    // > {"series":[],"rows":[],"num_rows":0,"report_update_time":"2018-06-11 20:45:50.934","data_update_time":"1970-01-01 08:00:00.000","data_sufficient_update_time":"1970-01-01 08:00:00.000","truncated":false}
+    // * done
+  })
+  .catch(err => {
+    console.error(err)
+  })
+/*</debug>*/
+
+/*<debug desc="sqlQuery">*/
+/*<jdists import="?declare" />*/
+api
+  .sqlQuery(
+    `
+  SELECT event, distinct_id
+    FROM events
+    LIMIT 4
+`
+  )
+  .then(reply => {
+    console.log(JSON.stringify(reply))
+    // > [{"distinct_id":"999999-0000-8888-000000","event":"index_leave"},{"distinct_id":"999999-0000-8888-000000","event":"$pageview"},{"distinct_id":"999999-0000-8888-000001","event":"index_leave"},{"distinct_id":"999999-0000-8888-000001","event":"$pageview"}]
+    // * done
+  })
+  .catch(err => {
+    console.error(err)
+  })
+/*</debug>*/
+/*</remove>*/
